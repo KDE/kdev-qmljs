@@ -85,10 +85,12 @@ using namespace KDevelop;
     KDEVQMLJSDUCHAIN_EXPORT DUContext* getInternalContext(const DeclarationPointer &declaration);
 
     /**
-     * Get the internal function context of a function. This context contains
-     * the arguments of the function.
+     * Get the owner of a context
+     *
+     * If the context is of type Function and has no owner, then its parent context
+     * is used to find the owner.
      */
-    KDEVQMLJSDUCHAIN_EXPORT DUContext* getInternalFunctionContext(const DeclarationPointer &declaration);
+    KDEVQMLJSDUCHAIN_EXPORT Declaration* getOwnerOfContext(const DUContext* context);
 
     /**
      * Build a zero-length range on the line of the given SourceLocation
