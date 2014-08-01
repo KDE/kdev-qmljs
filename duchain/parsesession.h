@@ -158,9 +158,9 @@ public:
                                                           int ownPriority);
 
     /**
-     * Schedule for update all the files importing @p context
+     * Schedule for update all the files that depend on this file
      */
-    void reparseImporters(KDevelop::DUContext* context);
+    void reparseImporters();
 
     /**
      * Schedule a document for update using the default flags of QML/JS

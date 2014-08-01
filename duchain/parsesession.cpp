@@ -18,6 +18,8 @@
 
 #include "parsesession.h"
 #include "debugvisitor.h"
+#include "cache.h"
+
 #include <qmljs/parser/qmljsast_p.h>
 
 #include <language/editor/simplerange.h>
@@ -228,21 +230,18 @@ ReferencedTopDUContext ParseSession::contextOfFile(const QString& fileName,
         // Ask KDevelop to parse the file
         scheduleForParsing(moduleFileString, ownPriority - 1);
 
-        // Then reparse this file, the import will exist
-        scheduleForParsing(url, ownPriority);
-
+        // Register a dependency between this file and the imported one
+        QmlJS::Cache::instance().addDependency(url, moduleFileString);
         return ReferencedTopDUContext();
     } else {
         return moduleContext;
     }
 }
 
-void ParseSession::reparseImporters(DUContext* context)
+void ParseSession::reparseImporters()
 {
-    DUChainReadLocker lock;
-
-    for (DUContext* importer : context->importers()) {
-        scheduleForParsing(importer->url(), m_ownPriority);
+    for (const KDevelop::IndexedString& file : QmlJS::Cache::instance().filesThatDependOn(m_url)) {
+        scheduleForParsing(file, m_ownPriority);
     }
 }
 
@@ -252,17 +251,9 @@ void ParseSession::scheduleForParsing(const IndexedString& url, int priority)
     TopDUContext::Features features = (TopDUContext::Features)
         (TopDUContext::ForceUpdate | TopDUContext::AllDeclarationsContextsAndUses);
 
-    if (bgparser->isQueued(url)) {
-        if (bgparser->priorityForDocument(url) > priority) {
-            // Remove the document and re-queue it with a greater priority
-            bgparser->removeDocument(url);
-        } else {
-            // Document already queued, do nothing
-            return;
-        }
+    if (!bgparser->isQueued(url)) {
+        bgparser->addDocument(url, features, priority, 0, ParseJob::FullSequentialProcessing);
     }
-
-    bgparser->addDocument(url, features, priority, 0, ParseJob::FullSequentialProcessing);
 }
 
 void ParseSession::dumpNode(QmlJS::AST::Node* node) const
