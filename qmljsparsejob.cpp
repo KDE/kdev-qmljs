@@ -20,7 +20,7 @@
 #include "qmljsparsejob.h"
 
 #include <language/backgroundparser/urlparselock.h>
-#include <custom-definesandincludes/idefinesandincludesmanager.h>
+#include <language/interfaces/idefinesandincludesmanager.h>
 
 #include <language/duchain/duchainlock.h>
 #include <language/duchain/duchainutils.h>
@@ -84,11 +84,6 @@ QmlJsParseJob::QmlJsParseJob(const IndexedString& url, ILanguageSupport* languag
         QmlJS::Cache::instance().setFileCustomIncludes(
             url,
             IDefinesAndIncludesManager::manager()->includes(file)
-        );
-    } else {
-        QmlJS::Cache::instance().setFileCustomIncludes(
-            url,
-            IDefinesAndIncludesManager::manager()->includes(url.str())
         );
     }
 }

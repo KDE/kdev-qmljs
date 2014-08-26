@@ -2,9 +2,9 @@ project(kdev-qml)
 
 set(VERSION_MAJOR 1)
 set(VERSION_MINOR 7)
-set(VERSION_PATCH 60)
+set(VERSION_PATCH 0)
 # KDevplatform dependency version
-set( KDEVPLATFORM_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}" )
+set(KDEVPLATFORM_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}" )
 
 cmake_minimum_required(VERSION 2.8.9)
 
