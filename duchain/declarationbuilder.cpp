@@ -329,7 +329,7 @@ bool DeclarationBuilder::inferArgumentsFromCall(QmlJS::AST::Node* base, QmlJS::A
     }
 
     // Don't touch functions declared outside this file
-    if (func_declaration->topContext() != topContext()) {
+    if (func_declaration->topContext() != topContext() || !func_declaration->internalContext()) {
         return true;
     }
 
