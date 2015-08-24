@@ -1,1 +1,0 @@
-module.exports = {greetings: "Hello, dear developer"};

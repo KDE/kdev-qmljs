@@ -1,3 +1,0 @@
-CustomComponent {
-    id: instance
-}
