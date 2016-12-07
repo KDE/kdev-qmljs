@@ -1,3 +1,3 @@
 project(kdev-qmljs LANGUAGES NONE)
 
-message(FATAL_ERROR "kdev-qmljs was merged into kdevelop.git!")
+message(FATAL_ERROR "kdev-qmljs was merged into kdevelop.git")
